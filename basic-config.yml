@@ -1,0 +1,10 @@
+
+mixed-port: 7890
+allow-lan: true
+
+external-controller: 127.0.0.1:9090
+external-controller-cors:
+  allow-origins:
+    - '*'
+  allow-private-network: true
+external-controller-unix: /var/run/mihomo.sock
