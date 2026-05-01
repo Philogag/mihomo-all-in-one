@@ -1,4 +1,4 @@
-while 1;
+while true;
 do 
     sleep ${SUBSCRIBE_INTERVAL}
 
