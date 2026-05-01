@@ -38,7 +38,8 @@ jobs:
         run: |
           VERSION=$(curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "Latest mihomo version: $VERSION"
+          echo "VERSION=$VERSION"
+
 
       - name: Extract metadata
         id: meta
@@ -49,18 +50,20 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=
-            type=raw,value=${{ steps.mihomo-version.outputs.VERSION }},enable=${{ steps.mihomo-version.outputs.VERSION != '' }}
+            type=raw,value=${{ steps.mihomo-version.outputs.VERSION }},enable=true
+            type=raw,value=main,enable=true
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64,linux/arm64/v8
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: MIHOMO_VERSION=${{ steps.mihomo-version.outputs.VERSION }}
+          build-args: |
+            MIHOMO_VERSION=${{ steps.mihomo-version.outputs.VERSION }}
+            TARGETARCH
           cache-from: type=gha
           cache-to: type=gha,mode=max

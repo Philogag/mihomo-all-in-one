@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #### frontend
 nginx -c /opt/nginx.conf

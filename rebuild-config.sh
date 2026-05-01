@@ -1,4 +1,6 @@
 
+#!/bin/bash
+
 FILES="/opt/basic-config.yml"
 
 if [[ ! -f /tmp/mihomo-api-secret.yml ]]; then
